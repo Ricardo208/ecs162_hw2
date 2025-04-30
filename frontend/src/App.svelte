@@ -38,7 +38,7 @@
       </div>
 
       <div class = header-center-logo>
-          <img src="images/logo.png" alt="Logo" id="logo"> 
+          <img src="/images/logo.png" alt="Logo" id="logo"> 
       </div>
 
       <div class = header-right-empty> <!-- in order to center the logo within the flex container, I added an empty spacer-->
@@ -56,22 +56,34 @@
         <!-- references to article properties given from example here: https://github.com/nytimes/public_api_specs/blob/master/article_search/article_search_v2.md -->
         <h2>{article.headline.main}</h2>
         <p>{article.snippet}</p>
-        {#if article.multimedia.length > 0}
-          <img src={"https://www.nytimes.com/" + article.multimedia[0].url} alt={article.headline.main} />
+
+        <!-- based on the json: https://api.nytimes.com/svc/search/v2/articlesearch.json?q=Davis%20OR%20Sacramento&api-key=SB6lFTn1ORTocZc7OkMnLZi5WA24YSDd-->
+        {#if article.multimedia && article.multimedia.default && article.multimedia.default.url}
+          <img
+            src={article.multimedia.default.url} 
+            alt={article.headline.main}x
+            style="max-width: 100%; height: auto;"
+          />
         {/if}
+
         <a href={article.web_url} target="_blank" rel="noopener noreferrer">Read More</a>
+
       </section>
     {/each}
   </div>
 </main>
 
 <style>
+
+  body {
+    background: white;
+  }
   .header-row{
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     margin-left: 30px;
     margin-right: 30px;
 }
