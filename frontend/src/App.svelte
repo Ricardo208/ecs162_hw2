@@ -5,12 +5,23 @@
   import Counter from './lib/Counter.svelte';
 
   let apiKey: string = '';
+  let articles = [];
 
   onMount(async () => {
     try {
       const res = await fetch('/api/key');
       const data = await res.json();
       apiKey = data.apiKey;
+
+      // refernce to filtering: https://developer.nytimes.com/docs/articlesearch-product/1/overview
+      const nytArticleRequestURL = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=Davis+Sacramento&api-key=${apiKey}`; // doing the actual filtering for davis and sac
+      const nytResponse = await fetch(nytArticleRequestURL); // fetch data
+      const nytData = await nytResponse.json(); // jsonify it 
+
+
+
+      //reference to an example of what nytData json returns: https://github.com/nytimes/public_api_specs/blob/master/article_search/article_search_v2.md?utm_source=chatgpt.com
+      articles = nytData.response.docs; 
     } catch (error) {
       console.error('Failed to fetch API key:', error);
     }
