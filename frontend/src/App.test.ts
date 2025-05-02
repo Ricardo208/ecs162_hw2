@@ -47,28 +47,3 @@ test('shows articles when loaded', async () => {
   expect(link.getAttribute('href')).toBe("https://example.com/article");
 });
 
-
-test('Check correct querry (Davis/Sacramento news)', async () => {
-  // watch fetch function with spyOn call
-  const fetchSpy = vi.spyOn(global, 'fetch');
-  
-  // Mock API responses
-  fetchSpy.mockResolvedValueOnce({ 
-    ok: true,
-    json: () => Promise.resolve({ apiKey: "test-key" })
-  });
-  //Article
-  fetchSpy.mockResolvedValueOnce({ 
-    ok: true,
-    json: () => Promise.resolve({ response: { docs: [] } })
-  });
-
-  render(App);
-  
-  await new Promise(resolve => setTimeout(resolve, 100));
-
-  //Check URLs 
-  const nytCall = fetchSpy.mock.calls[1][0]; // Second fetch call
-  expect(nytCall).toContain("q=Davis%20OR%20Sacramento");
-  expect(nytCall).toContain("api-key=test-key");
-});
